@@ -1,17 +1,23 @@
 import java.util.Scanner;
 
 public class Main {
+    public static double DESCUENTO = 0.10;
+    public static double UMBRAL_DESCUENTO = 1000.0;
 
-    public static double IVA = 0.16;
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Calculador de presupuesto con IVA");
-        double subtotal = pedirDouble(scanner, "Ingresa el valor del subtotal para calcular el IVA: ");
-        double [] totalFinal = obtenerIVA(subtotal);
+        System.out.println("Calculador de presupuesto sin IVA");
+        double subtotal = pedirDouble(scanner, "Ingresa el valor del subtotal: ");
 
-        System.out.printf("El valor del IVA es de: %.2f%n", totalFinal[0]);
-        System.out.printf("El total a pagar: %.2f%n", totalFinal[1]);
+        double totalConDescuento = calcularDescuento(subtotal);
+
+        if (subtotal > UMBRAL_DESCUENTO) {
+            System.out.printf("El total a pagar con descuento es de: %.2f%n", totalConDescuento);
+        } else {
+            System.out.println("El precio no alcanzó el estándar de descuento.");
+            System.out.printf("El total a pagar es de: %.2f%n", subtotal);
+        }
     }
 
     public static double pedirDouble(Scanner scanner, String mensaje) {
@@ -19,9 +25,11 @@ public class Main {
         return scanner.nextDouble();
     }
 
-    public static double[] obtenerIVA(double subtotal) {
-        double valorDeIVA = subtotal * IVA;
-        double valorConIVA = valorDeIVA + subtotal;
-        return new double[]{valorDeIVA, valorConIVA};
+    public static double calcularDescuento(double subtotal) {
+        if (subtotal > UMBRAL_DESCUENTO) {
+            return subtotal - (subtotal * DESCUENTO);
+        } else {
+            return subtotal;
+        }
     }
 }
